@@ -1,9 +1,8 @@
+import express from 'express';
+import { courseControllers } from './course.controller';
 
-import express from "express";
-import { courseControllers } from "./course.controller";
+const router = express.Router();
 
-const router = express.Router()
+router.get('/', courseControllers.getAllCourses);
 
-router.get('/',courseControllers.getAllCourses)
-
-export const CoursePaginatedAndFilterRoute = router
+export const CoursePaginatedAndFilterRoute = router;

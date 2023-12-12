@@ -5,21 +5,20 @@ import { CoursePaginatedAndFilterRoute } from '../modules/Course/course.paginate
 const router = Router();
 
 const moduleRoutes = [
-    {
-      path: '/categories',
-      route: CategoryRoutes,
-    },
-    {
-      path: '/course',
-      route: CourseRoute,
-    },
-    {
-      path: '/courses',
-      route: CoursePaginatedAndFilterRoute,
-    }
-    
-  ];
-  
-  moduleRoutes.forEach((route) => router.use(route.path, route.route));
-  
-  export default router;
+  {
+    path: '/categories',
+    route: CategoryRoutes,
+  },
+  {
+    path: '/course',
+    route: CourseRoute,
+  },
+  {
+    path: '/courses',
+    route: CoursePaginatedAndFilterRoute,
+  },
+];
+
+moduleRoutes.forEach((route) => router.use(route.path, route.route));
+
+export default router;
