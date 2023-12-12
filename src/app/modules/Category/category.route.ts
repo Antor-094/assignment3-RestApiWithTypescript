@@ -6,5 +6,5 @@ import { CategoryControllers } from './category.controller';
 const router = express.Router();
 
 router.post('/',validateRequest(categoryValidation.categoryValidationSchema),CategoryControllers.createCategory)
-
+router.get('/',CategoryControllers.getAllCategory)
 export const CategoryRoutes = router

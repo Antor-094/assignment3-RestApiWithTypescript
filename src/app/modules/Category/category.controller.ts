@@ -1,3 +1,4 @@
+import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { CategoryService } from "./category.service";
@@ -15,9 +16,21 @@ const createCategory = catchAsync(async (req,res)=>{
     data: result,
     })
 })
+const getAllCategory = catchAsync(async (req,res)=>{
+
+    const result = await CategoryService.getAllCategoryFromDB()
+
+    sendResponse(res,{
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Categories retrieved successfully',
+    data: result,
+    })
+})
 
 
 
 export const CategoryControllers = {
-    createCategory
+    createCategory,
+    getAllCategory
 } 
