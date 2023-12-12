@@ -1,4 +1,5 @@
 
+import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { courseService } from "./course.service";
@@ -15,6 +16,18 @@ const createCourse = catchAsync(async(req,res)=>{
         data:result
     })
 })
+const getAllCourses = catchAsync(async(req,res)=>{
+    // console.log(req.query)
+    const result = await courseService.getPaginatedAndFilterCoursesFromDB(req.query)
+
+    sendResponse(res,{
+        success:true,
+        statusCode:httpStatus.OK,
+        message:"Courses retrieved successfully",
+        data:result
+    })
+})
 export const courseControllers = {
-    createCourse
+    createCourse,
+    getAllCourses
 }

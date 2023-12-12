@@ -8,4 +8,5 @@ const router = express.Router()
 
 router.post('/',validateRequest(CourseValidations.TCourseValidationSchema),courseControllers.createCourse)
 
+
 export const CourseRoute = router

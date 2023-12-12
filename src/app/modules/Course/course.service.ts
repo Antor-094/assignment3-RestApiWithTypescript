@@ -7,6 +7,17 @@ const createCourseIntoDB = async (payload:TCourse)=>{
     return result
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getPaginatedAndFilterCoursesFromDB = async (query:Record<string,any>)=>{
+    const { page = 1, limit = 10 } = query;
+
+    const skip = (page - 1) * limit;
+    
+    const result = await Course.find().skip(skip).limit(parseInt(limit as string));
+
+    return result;
+}
 export const courseService = {
-    createCourseIntoDB
+    createCourseIntoDB,
+   getPaginatedAndFilterCoursesFromDB
 }
