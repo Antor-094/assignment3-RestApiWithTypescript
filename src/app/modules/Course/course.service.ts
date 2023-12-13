@@ -55,8 +55,37 @@ const getCourseWithReviewFromDB = async(id:string)=>{
    
   return {result,reviews}
 }
+
+const getTheBestCourseWithHighestRatingFromDB =async()=> {
+
+  const courses = await Course.find()
+  let bestCourse = null;
+  let highestAverageRating = 0;
+  let reviewCount= 0
+
+for (const course of courses) {
+      
+      const reviews = await Review.find({ courseId: course._id });
+
+      const averageRating =
+        reviews.length > 0
+          ? reviews.reduce((sum, review) => sum + review.rating, 0) /
+            reviews.length
+          : 0;     
+  
+      if (averageRating > highestAverageRating) {
+        bestCourse = course;
+        highestAverageRating = averageRating;
+        reviewCount=reviews.length
+      }
+    }
+    
+    return {bestCourse,highestAverageRating,reviewCount}
+
+}
 export const courseService = {
   createCourseIntoDB,
   getPaginatedAndFilterCoursesFromDB,
-  getCourseWithReviewFromDB
+  getCourseWithReviewFromDB,
+  getTheBestCourseWithHighestRatingFromDB
 };
