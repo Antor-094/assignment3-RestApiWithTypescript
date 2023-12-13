@@ -1,3 +1,5 @@
+import httpStatus from 'http-status';
+import AppError from '../../error/AppError';
 import { Review } from '../Review/review.model';
 import { allowedSortFields } from './course.constant';
 import { SortOrder, TCourse } from './course.interface';
@@ -48,44 +50,71 @@ const getPaginatedAndFilterCoursesFromDB = async (
 };
 
 
-const getCourseWithReviewFromDB = async(id:string)=>{
- 
-  const result = await Course.findById({_id:new Object(id)})
-  const reviews = await Review.find({courseId:id})
-   
-  return {result,reviews}
+const getCourseWithReviewFromDB = async (id: string) => {
+
+  const result = await Course.findById({ _id: new Object(id) })
+  const reviews = await Review.find({ courseId: id })
+
+  return { result, reviews }
 }
 
-const getTheBestCourseWithHighestRatingFromDB =async()=> {
+const getTheBestCourseWithHighestRatingFromDB = async () => {
 
   const courses = await Course.find()
   let bestCourse = null;
   let highestAverageRating = 0;
-  let reviewCount= 0
+  let reviewCount = 0
 
-for (const course of courses) {
-      
-      const reviews = await Review.find({ courseId: course._id });
+  for (const course of courses) {
 
-      const averageRating =
-        reviews.length > 0
-          ? reviews.reduce((sum, review) => sum + review.rating, 0) /
-            reviews.length
-          : 0;     
-  
-      if (averageRating > highestAverageRating) {
-        bestCourse = course;
-        highestAverageRating = averageRating;
-        reviewCount=reviews.length
-      }
+    const reviews = await Review.find({ courseId: course._id });
+
+    const averageRating =
+      reviews.length > 0
+        ? reviews.reduce((sum, review) => sum + review.rating, 0) /
+        reviews.length
+        : 0;
+
+    if (averageRating > highestAverageRating) {
+      bestCourse = course;
+      highestAverageRating = averageRating;
+      reviewCount = reviews.length
     }
-    
-    return {bestCourse,highestAverageRating,reviewCount}
+  }
+
+  return { bestCourse, highestAverageRating, reviewCount }
 
 }
+
+const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
+  const { details, ...courseRemainingData } = payload;
+
+ 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateObject: any = {};
+  if (details?.level || details?.description) {
+    updateObject['details.level'] = details?.level;
+    updateObject['details.description'] = details?.description;
+  }
+
+  const updatedCourse = await Course.findByIdAndUpdate(
+    id,
+    { ...courseRemainingData, ...updateObject },
+    { new: true, runValidators: true }
+  );
+
+  if (!updatedCourse) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Failed to update course');
+  }
+
+  return updatedCourse;
+};
+
+
 export const courseService = {
   createCourseIntoDB,
   getPaginatedAndFilterCoursesFromDB,
   getCourseWithReviewFromDB,
-  getTheBestCourseWithHighestRatingFromDB
+  getTheBestCourseWithHighestRatingFromDB,
+  updateCourseIntoDB
 };

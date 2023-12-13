@@ -14,7 +14,7 @@ const handleValidationError = (
 
   return {
     statusCode,
-    message: 'Validation Error from antor',
+    message: 'Validation Error',
     errorMessage:messageErr
   };
 };
