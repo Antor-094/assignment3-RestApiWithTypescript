@@ -65,6 +65,7 @@ const courseSchema = new Schema<TCourse>(
         trim: true,
       },
     },
+    
   },
   {
     toJSON: {

@@ -1,10 +1,12 @@
 import { Types } from 'mongoose';
 
+
 export type SortOrder = 'asc' | 'desc';
 export type TTag = {
   name: string;
   isDeleted: boolean;
 };
+
 export type TCourse = {
   title: string;
   instructor: string;
@@ -19,4 +21,5 @@ export type TCourse = {
     level: string;
     description: string;
   };
+ 
 };

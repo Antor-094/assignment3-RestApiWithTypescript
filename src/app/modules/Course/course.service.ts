@@ -1,3 +1,4 @@
+import { Review } from '../Review/review.model';
 import { allowedSortFields } from './course.constant';
 import { SortOrder, TCourse } from './course.interface';
 import { Course } from './course.model';
@@ -45,7 +46,17 @@ const getPaginatedAndFilterCoursesFromDB = async (
   const totalCourse = await Course.find();
   return { result, limit, page, total: totalCourse.length };
 };
+
+
+const getCourseWithReviewFromDB = async(id:string)=>{
+ 
+  const result = await Course.findById({_id:new Object(id)})
+  const reviews = await Review.find({courseId:id})
+   
+  return {result,reviews}
+}
 export const courseService = {
   createCourseIntoDB,
   getPaginatedAndFilterCoursesFromDB,
+  getCourseWithReviewFromDB
 };
