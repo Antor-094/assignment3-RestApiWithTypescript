@@ -6,5 +6,5 @@ export type TErrorSources = {
 export type TGenericErrorResponse = {
   statusCode: number;
   message: string;
-  errorStringMessage: string[]
+  errorMessage: string
 };

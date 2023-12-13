@@ -7,11 +7,11 @@ const handleZodError = (err: ZodError): TGenericErrorResponse => {
     return `${issue?.path[issue.path.length - 1]} is ${issue.message}`
   })
   const statusCode = 400;
-
+ const messageErr = messageError.join(', ')
   return {
     statusCode,
     message: 'Validation Error',
-    errorStringMessage: messageError
+    errorMessage: messageErr
   };
 };
 

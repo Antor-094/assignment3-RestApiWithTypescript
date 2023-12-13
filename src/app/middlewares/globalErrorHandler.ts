@@ -15,23 +15,23 @@ const globalErrorHandler: ErrorRequestHandler = (errorDetails, req, res, next) =
   //setting default values
   let statusCode = 500;
   let message = 'Something went wrong!';
-  let errorStringMessage: string[] = []
- 
+  let errorMessage: string = ''
+
   if (errorDetails instanceof ZodError) {
     const simplifiedError = handleZodError(errorDetails);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
-    errorStringMessage = simplifiedError?.errorStringMessage
+    errorMessage = simplifiedError?.errorMessage
   } else if (errorDetails?.name === 'ValidationError') {
     const simplifiedError = handleValidationError(errorDetails);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
-  
+ 
   } else if (errorDetails?.name === 'CastError') {
     const simplifiedError = handleCastError(errorDetails);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
- 
+    errorMessage = simplifiedError?.errorMessage
   } else if (errorDetails?.code === 11000) {
     const simplifiedError = handleDuplicateError(errorDetails);
     statusCode = simplifiedError?.statusCode;
@@ -45,7 +45,7 @@ const globalErrorHandler: ErrorRequestHandler = (errorDetails, req, res, next) =
     message = errorDetails.message;
    
   }
-  const errorMessage = errorStringMessage.join(', ')
+
   //ultimate return
   return res.status(statusCode).json({
     success: false,
