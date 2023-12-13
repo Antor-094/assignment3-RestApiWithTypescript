@@ -36,6 +36,7 @@ const globalErrorHandler: ErrorRequestHandler = (errorDetails, req, res, next) =
     const simplifiedError = handleDuplicateError(errorDetails);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
+    errorMessage = simplifiedError?.errorMessage
   
   } else if (errorDetails instanceof AppError) {
     statusCode = errorDetails?.statusCode;
