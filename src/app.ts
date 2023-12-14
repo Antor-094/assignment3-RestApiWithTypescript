@@ -11,7 +11,7 @@ app.use(cors());
 app.use('/api', router);
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+  res.send('Welcome to test the Rest API works with typescript');
 });
 
 app.use(globalErrorHandler);
