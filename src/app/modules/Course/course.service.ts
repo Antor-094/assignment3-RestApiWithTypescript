@@ -4,6 +4,9 @@ import { Review } from '../Review/review.model';
 import {
   allowedSortFields,
   dateFilter,
+  filterByLanguage,
+  filterByLevel,
+  filterByProvider,
   priceFilter,
   sortOptions,
   tagFilter,
@@ -30,6 +33,9 @@ const getPaginatedAndFilterCoursesFromDB = async (
     tags,
     endDate,
     startDate,
+    language,
+    provider,
+    level
   } = query;
 
   if (sortBy && !allowedSortFields.includes(sortBy as string)) {
@@ -60,15 +66,32 @@ const getPaginatedAndFilterCoursesFromDB = async (
     dateFilter.endDate = { $lte: endDate };
   }
 
+  if (language !== undefined) {
+    filterByLanguage.language = language
+  }
+
+  if (provider !== undefined) {
+    filterByProvider.provider = provider
+  }
+
+ 
+  if(level !== undefined){
+    filterByLevel['details.level'] = level
+  }
   const skip = (page - 1) * limit;
   const result = await Course.find({
     ...priceFilter,
     ...tagFilter,
     ...dateFilter,
+    ...filterByLanguage,
+    ...filterByProvider,
+    ...filterByLevel
+    
   })
     .sort(sortOptions)
     .skip(skip)
     .limit(parseInt(limit as string));
+    
   const totalCourse = await Course.find();
   return { result, limit, page, total: totalCourse.length };
 };
@@ -92,7 +115,7 @@ const getTheBestCourseWithHighestRatingFromDB = async () => {
     const averageRating =
       reviews.length > 0
         ? reviews.reduce((sum, review) => sum + review.rating, 0) /
-          reviews.length
+        reviews.length
         : 0;
 
     if (averageRating > highestAverageRating) {
