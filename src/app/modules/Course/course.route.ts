@@ -10,6 +10,6 @@ router.post(
   validateRequest(CourseValidations.TCourseValidationSchema),
   courseControllers.createCourse,
 );
-router.get('/best',courseControllers.getBestCourseWithHighestRating)
+router.get('/best', courseControllers.getBestCourseWithHighestRating);
 
 export const CourseRoute = router;

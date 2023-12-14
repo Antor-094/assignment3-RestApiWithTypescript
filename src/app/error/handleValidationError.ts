@@ -6,16 +6,16 @@ const handleValidationError = (
 ): TGenericErrorResponse => {
   const errorSources = Object.values(err.errors).map(
     (val: mongoose.Error.ValidatorError | mongoose.Error.CastError) => {
-      return `${val?.path} is ${val?.message}`  
+      return `${val?.path} is ${val?.message}`;
     },
   );
-  const messageErr = errorSources.join(', ')
+  const messageErr = errorSources.join(', ');
   const statusCode = 400;
 
   return {
     statusCode,
     message: 'Validation Error',
-    errorMessage:messageErr
+    errorMessage: messageErr,
   };
 };
 

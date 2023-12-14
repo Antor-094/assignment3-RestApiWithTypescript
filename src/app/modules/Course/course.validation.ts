@@ -36,15 +36,17 @@ const updateCourseValidationSchema = z.object({
     endDate: z.string().optional(),
     language: z.string().optional(),
     provider: z.string().optional(),
-    details: z.object({
-      level: z.string().trim().optional(),
-      description: z.string().trim().optional(),
-    }).optional(),
+    details: z
+      .object({
+        level: z.string().trim().optional(),
+        description: z.string().trim().optional(),
+      })
+      .optional(),
   }),
 });
 
 export const CourseValidations = {
   TTagValidationSchema,
   TCourseValidationSchema,
-  updateCourseValidationSchema
+  updateCourseValidationSchema,
 };
